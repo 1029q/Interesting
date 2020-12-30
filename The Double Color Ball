@@ -1,0 +1,78 @@
+'''
+The Double Color Ball: (A Lottery Ticket)
+This program is based on the Conditional Probability Model for producing random numbers to purchase The Double Color Ball.
+I buy a double color ball every week based on the results of the program.
+'''
+
+# -*- coding: utf-8 -*-
+"""
+@Time ： 2020/12/10 11:49
+@Auth ： Qimeng Tao
+@File ：double_ball.py
+@IDE ：PyCharm
+
+
+"""
+import numpy as np
+import random
+
+
+def get_ball(original, ball_num):
+    copyball_num = ball_num
+    length = range(len(original))
+    ball_list = []
+    while True:
+        args = random.sample(length, ball_num)
+        ball_list.extend(np.array(original)[args])
+        ball_list = list(set(ball_list))
+        if len(ball_list) == copyball_num:
+            break
+        else:
+            ball_num = copyball_num - len(ball_list)
+    ball_list.sort()
+    return ball_list
+
+
+def remove_num(original, first, last, remove_list_num):
+    for i in remove_list_num:
+        if (i >= first) and (i <= last):
+            original.remove(i)
+            original.remove(i)
+        else:
+            original.remove(i)
+    return original
+
+
+def get_double_color_balls(min_value, max_value, repeat_min, repeat_max, remove_list,nums):
+    front_15 = list(np.arange(repeat_min, repeat_max + 1))
+    all_num = list(np.arange(min_value, max_value + 1))
+
+    red_list = front_15 + all_num
+    # print(red_list)
+    finally_red_list = remove_num(red_list, repeat_min, repeat_max, remove_list)
+    # print(finally_red_list)
+    np.random.shuffle(finally_red_list)
+    # print(finally_red_list)
+    args = get_ball(finally_red_list, nums)
+    return args
+
+
+if __name__ == '__main__':
+    red_min = 1
+    red_max = 33
+    red_repeat_min = 1
+    red_repeat_max = 15
+    red_last_Winning_numbers = [16, 18, 19, 20, 29, 33]
+    red_ball_num = 6
+
+    blue_min = 1
+    blue_max = 16
+    blue_repeat_min = 1
+    blue_repeat_max = 8
+    blue_last_Winning_numbers = [3, 12, 15]
+    blue_ball_num = 1
+
+    for i in range(100):
+        red_ball = get_double_color_balls(red_min, red_max, red_repeat_min, red_repeat_max, red_last_Winning_numbers,red_ball_num)
+        blue_ball = get_double_color_balls(blue_min, blue_max, blue_repeat_min, blue_repeat_max, blue_last_Winning_numbers,blue_ball_num)
+        print(red_ball,"+",blue_ball)
