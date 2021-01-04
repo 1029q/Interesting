@@ -1,5 +1,5 @@
 '''
-The Double Color Ball: (A Lottery Ticket)
+The Double Color Ball: (A Lottery Ticket).
 I designed a program based on conditional probability to buy the lottery-bicolor ball. 
 The first prize principle of the bicolor ball is that choosing 6 numbers from 33 red balls and 1 number from 16 blue balls.
 If those numbers are matched with the official ones. 
