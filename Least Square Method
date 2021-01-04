@@ -1,0 +1,170 @@
+#include<stdio.h>
+#include<math.h>
+#define N 10
+void main()
+{
+	int i, j;
+	float sum = 0;
+	float A[3][4];
+	float x[5], y[5], z[5];
+	printf("请输入x0-x4\n");
+	for (i = 0;i < 5;i++)
+	{
+		scanf("%f", &x[i]);
+	}
+	printf("请输入y0-y4\n");
+	for (i = 0;i < 5;i++)
+	{
+		scanf("%f", &y[i]);
+	}
+	printf("请输入z0-z4\n");
+	for (i = 0;i < 5;i++)
+	{
+		scanf("%f", &z[i]);
+	}
+	for (i = 0;i < 5;i++)
+	{
+		sum += x[i] * x[i];
+		A[0][0] = sum;
+
+	}
+	sum = 0;
+	for (i = 0;i < 5;i++)
+	{
+		sum += x[i] * y[i];
+		A[0][1] = sum;
+		A[1][0] = sum;
+	}
+	sum = 0;
+	for (i = 0;i < 5;i++)
+	{
+		sum += x[i];
+		A[0][2] = sum;
+		A[2][0] = sum;
+	}
+	sum = 0;
+
+	for (i = 0;i < 5;i++)
+	{
+		sum += y[i] * y[i];
+		A[1][1] = sum;
+
+	}
+	sum = 0;
+	for (i = 0;i < 5;i++)
+	{
+		sum += x[i] * x[i];
+		A[0][0] = sum;
+
+	}
+	sum = 0;
+	for (i = 0;i < 5;i++)
+	{
+		sum += y[i];
+		A[1][2] = sum;
+		A[2][1] = sum;
+
+	}
+	sum = 0;
+	for (i = 0;i < 5;i++)
+	{
+		sum += 1;
+		A[2][2] = sum;
+
+	}
+	sum = 0;
+	for (i = 0;i < 5;i++)
+	{
+		sum += x[i] * z[i];
+		A[0][3] = sum;
+
+	}
+	sum = 0;
+	for (i = 0;i < 5;i++)
+	{
+		sum += y[i] * z[i];
+		A[1][3] = sum;
+
+	}
+	sum = 0;
+	for (i = 0;i < 5;i++)
+	{
+		sum += z[i];
+		A[2][3] = sum;
+
+	}
+	sum = 0;
+	int n;
+
+	printf("请输入求解的x的维度n:\n");
+	scanf("%d", &n);
+	printf("您要求解的x的维度是:%d\n", n);
+	float total, T[3];
+
+
+	int  k, m, e;
+
+	float u;
+	for (j = 0;j<n - 1;j++)
+	{
+		k = j;
+		for (i = j;i<n;i++)
+		{
+			if (fabs(A[i][j])>fabs(A[k][j]))
+				k = i;
+		}
+
+		for (m = 0;m<n + 1;m++)
+		{
+			u = A[j][m];
+			A[j][m] = A[k][m];
+			A[k][m] = u;
+		}
+	}
+	//首先完成行交换，使各主元素为各列最大
+
+	float p;
+	for (i = 0;i<n - 1;i++)
+	{
+		for (j = i + 1;j<n;j++)
+		{
+			p = A[j][i] / A[i][i];
+			for (e = 0;e<n + 1;e++)
+			{
+				A[j][e] = A[j][e] - p*A[i][e];
+			}
+		}
+
+	}
+
+	//消元后，矩阵变为上三角矩阵
+	printf("消元后的结果:\n");
+	for (i = 0;i<n;i++)
+
+	{
+		for (j = 0;j<n + 1;j++)
+			printf("%4.3f ", A[i][j]);
+		printf("\n");
+	}
+	T[n - 1] = A[n - 1][n] / A[n - 1][n - 1];
+	for (i = n - 2;i >= 0;i--)
+
+
+	{
+
+
+		total = A[i][n];
+		for (j = n - 1;j>i;j--)
+			total = total - T[j] * A[i][j];
+		T[i] = total / A[i][i];
+	}
+
+	//回代过程
+	printf("方程的解如下:\n");
+	for (i = 0;i<n;i++)
+	{
+		printf("x%u=%5.4f\n", i, T[i]);
+}
+
+	printf("y=%.1f*x+%.1f*y+%.1f\n",T[0], T[1], T[2]);
+}
